@@ -4,6 +4,7 @@
   "description": "A note-taking application designed to make jotting your thoughts down easy & powerful.",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icons/768.png",
