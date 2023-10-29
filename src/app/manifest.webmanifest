@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Jot",
+  "description": "A note-taking application designed to make jotting your thoughts down easy & powerful.",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icons/768.png",
+      "type": "image/png",
+      "sizes": "768x768"
+    }
+  ]
+}
