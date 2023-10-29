@@ -1,4 +1,4 @@
-import { tv } from "tailwind-variants";
+import { tv } from "tailwind-variants"
 
 export const button = tv({
   base: "px-3 py-2 border rounded active:opacity-80 hover:sclae-105 active:scale-95 transition-transform focus:outline-emerald-400 focus:outline-offset-4",
@@ -14,7 +14,7 @@ export const button = tv({
     },
   },
   defaultVariants: {
-    layout: "block",
+    layout: "none",
     style: "filled",
   },
-});
+})
