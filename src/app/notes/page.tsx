@@ -19,7 +19,7 @@ function fetchAllNotes(userId: string) {
         where: eq(notes.userId, userId),
       }),
     ["all-notes", userId],
-    { tags: ["notes"] }
+    { tags: ["notes"] },
   )()
 }
 
@@ -28,9 +28,9 @@ export default function Page() {
   if (!userId) return null
 
   return (
-    <div className="p-8 max-w-md lg:max-w-xl mx-auto flex flex-col gap-8 items-center">
+    <div className="mx-auto flex max-w-md flex-col items-center gap-8 p-8 lg:max-w-xl">
       <ResettingForm
-        className="border rounded-lg border-slate-700 bg-slate-900 focus-within:shadow-inner focus-within:ring-2 ring-emerald-400 w-full"
+        className="w-full rounded-lg border border-slate-700 bg-slate-900 ring-emerald-400 focus-within:shadow-inner focus-within:ring-2"
         action={async (data: FormData) => {
           "use server"
 
@@ -49,7 +49,7 @@ export default function Page() {
       >
         <DisableWhileSubmitting>
           <textarea
-            className="p-4 bg-transparent border-0 border-b resize-none border-slate-700 focus:border-slate-700 w-full focus:ring-0 block"
+            className="block w-full resize-none border-0 border-b border-slate-700 bg-transparent p-4 focus:border-slate-700 focus:ring-0"
             rows={5}
             name="content"
             placeholder="I'm thinking about..."
@@ -64,7 +64,7 @@ export default function Page() {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="w-5 h-5"
+                className="h-5 w-5"
               >
                 <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
               </svg>
@@ -84,7 +84,7 @@ function* getNoteElements(notes: Note[]) {
   let lastSeenDate = 0
   for (const note of notes) {
     const noteDate = Math.floor(
-      note.createdAt.getTime() / (1000 * 60 * 60 * 24)
+      note.createdAt.getTime() / (1000 * 60 * 60 * 24),
     )
     if (lastSeenDate !== noteDate) {
       lastSeenDate = noteDate
@@ -108,13 +108,13 @@ async function NoteList() {
   })
 
   return (
-    <ul className="space-y-4 p-4 w-full">{[...getNoteElements(allNotes)]}</ul>
+    <ul className="w-full space-y-4 p-4">{[...getNoteElements(allNotes)]}</ul>
   )
 }
 
 function Note({ note }: { note: Note }) {
   return (
-    <div className="p-4 rounded-lg bg-slate-700 space-y-4 hover:brightness-105">
+    <div className="space-y-4 rounded-lg bg-slate-700 p-4 hover:brightness-105">
       <p className="whitespace-pre-wrap">{note.content.trim()}</p>
       <div className="flex items-center justify-between text-rose-400">
         <ConfirmButton
@@ -134,7 +134,7 @@ function Note({ note }: { note: Note }) {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-5 h-5"
+            className="h-5 w-5"
           >
             <path
               fillRule="evenodd"

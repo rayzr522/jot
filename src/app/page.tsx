@@ -1,12 +1,12 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
 export default function Home() {
-  const { userId } = auth();
-  if (userId) return redirect("/notes");
+  const { userId } = auth()
+  if (userId) return redirect("/notes")
   return (
-    <main className="min-h-screen p-24 space-y-4">
-      <h1 className="text-emerald-400 text-2xl font-semibold">
+    <main className="min-h-screen space-y-4 p-24">
+      <h1 className="text-2xl font-semibold text-emerald-400">
         Welcome to Jot
       </h1>
       <p>
@@ -14,5 +14,5 @@ export default function Home() {
         understanding of your brain.
       </p>
     </main>
-  );
+  )
 }
