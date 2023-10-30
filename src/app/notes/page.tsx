@@ -2,9 +2,13 @@ import { db } from "@/db"
 import { notes } from "@/db/schema"
 import { button } from "@/styles"
 import { auth } from "@clerk/nextjs"
-import { InferSelectModel, and, eq } from "drizzle-orm"
+import { InferSelectModel, and, desc, eq } from "drizzle-orm"
 import { revalidateTag, unstable_cache } from "next/cache"
+import { Suspense } from "react"
 import { ConfirmButton } from "./ConfirmButton"
+import { DisableWhileSubmitting } from "./DisableWhileSubmitting"
+import { ResettingForm } from "./ResettingForm"
+import { Spinner } from "./Spinner"
 
 type Note = InferSelectModel<typeof notes>
 
@@ -16,15 +20,69 @@ function fetchAllNotes(userId: string) {
       }),
     ["all-notes", userId],
     { tags: ["notes"] }
+  )()
+}
+
+export default function Page() {
+  const { userId } = auth()
+  if (!userId) return null
+
+  return (
+    <div className="p-8 max-w-md lg:max-w-xl mx-auto flex flex-col gap-8 items-center">
+      <ResettingForm
+        className="border rounded-lg border-slate-700 bg-slate-900 focus-within:shadow-inner focus-within:ring-2 ring-emerald-400 w-full"
+        action={async (data: FormData) => {
+          "use server"
+
+          await new Promise((r) => setTimeout(r, 2000))
+          const content = data.get("content")
+          if (!content || typeof content !== "string") return null
+
+          await db.insert(notes).values({
+            id: crypto.randomUUID(),
+            content,
+            userId,
+            createdAt: new Date(),
+          })
+          revalidateTag("notes")
+        }}
+      >
+        <DisableWhileSubmitting>
+          <textarea
+            className="p-4 bg-transparent border-0 border-b resize-none border-slate-700 focus:border-slate-700 w-full focus:ring-0 block"
+            rows={5}
+            name="content"
+            placeholder="I'm thinking about..."
+            autoFocus
+          />
+          <div className="p-2">
+            <button
+              type="submit"
+              className={`${button({ layout: "row", style: "text" })} ml-auto`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-5 h-5"
+              >
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+              </svg>
+              Save
+            </button>
+          </div>
+        </DisableWhileSubmitting>
+      </ResettingForm>
+      <Suspense fallback={<Spinner />}>
+        <NoteList />
+      </Suspense>
+    </div>
   )
 }
 
 function* getNoteElements(notes: Note[]) {
   let lastSeenDate = 0
-  const sortedNotes = [...notes].sort(
-    (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
-  )
-  for (const note of sortedNotes) {
+  for (const note of notes) {
     const noteDate = Math.floor(
       note.createdAt.getTime() / (1000 * 60 * 60 * 24)
     )
@@ -40,65 +98,23 @@ function* getNoteElements(notes: Note[]) {
   }
 }
 
-export default async function Page() {
+async function NoteList() {
   const { userId } = auth()
   if (!userId) return null
 
   const allNotes = await db.query.notes.findMany({
     where: (notes, { eq }) => eq(notes.userId, userId),
+    orderBy: desc(notes.createdAt),
   })
 
   return (
-    <div className="p-8 max-w-md lg:max-w-xl mx-auto">
-      <form
-        className="border rounded-lg border-slate-800 bg-slate-900 focus-within:shadow-inner focus-within:ring-2 ring-emerald-400"
-        action={async (data: FormData) => {
-          "use server"
-          const content = data.get("content")
-          if (!content || typeof content !== "string") return null
-
-          await db.insert(notes).values({
-            id: crypto.randomUUID(),
-            content,
-            userId,
-            createdAt: new Date(),
-          })
-          revalidateTag("notes")
-        }}
-      >
-        <textarea
-          className="p-4 bg-transparent border-0 border-b resize-none border-slate-800 focus:border-slate-800 w-full focus:ring-0 block"
-          rows={5}
-          name="content"
-          placeholder="I'm thinking about..."
-          key={allNotes.length}
-          autoFocus
-        />
-        <div className="p-2">
-          <button
-            type="submit"
-            className={`${button({ layout: "row", style: "text" })} ml-auto`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-5 h-5"
-            >
-              <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-            </svg>
-            Save
-          </button>
-        </div>
-      </form>
-      <ul className="space-y-4 p-4">{[...getNoteElements(allNotes)]}</ul>
-    </div>
+    <ul className="space-y-4 p-4 w-full">{[...getNoteElements(allNotes)]}</ul>
   )
 }
 
 function Note({ note }: { note: Note }) {
   return (
-    <div className="p-4 rounded-lg bg-slate-800 space-y-4 hover:brightness-105">
+    <div className="p-4 rounded-lg bg-slate-700 space-y-4 hover:brightness-105">
       <p className="whitespace-pre-wrap">{note.content.trim()}</p>
       <div className="flex items-center justify-between text-rose-400">
         <ConfirmButton
