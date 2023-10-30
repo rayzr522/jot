@@ -1,14 +1,14 @@
 import { db } from "@/db"
 import { notes } from "@/db/schema"
-import { button } from "@/styles"
+import { button, spinner } from "@/styles"
 import { auth } from "@clerk/nextjs"
 import { InferSelectModel, and, desc, eq } from "drizzle-orm"
 import { revalidateTag, unstable_cache } from "next/cache"
 import { Suspense } from "react"
 import { ConfirmButton } from "./ConfirmButton"
 import { DisableWhileSubmitting } from "./DisableWhileSubmitting"
+import { FormPending } from "./FormPending"
 import { ResettingForm } from "./ResettingForm"
-import { Spinner } from "./Spinner"
 
 type Note = InferSelectModel<typeof notes>
 
@@ -49,13 +49,16 @@ export default function Page() {
       >
         <DisableWhileSubmitting>
           <textarea
-            className="block w-full resize-none border-0 border-b border-neutral-700 bg-transparent p-4 focus:border-neutral-700 focus:ring-0"
+            className="block w-full resize-none border-0 border-b border-neutral-700 bg-transparent p-4 focus:border-neutral-700 focus:ring-0 disabled:opacity-60"
             rows={5}
             name="content"
             placeholder="I'm thinking about..."
             autoFocus
           />
-          <div className="p-2">
+          <div className="flex items-center gap-4 p-2">
+            <FormPending>
+              <div className={spinner({ size: "small" })} />
+            </FormPending>
             <button
               type="submit"
               className={`${button({ layout: "row", style: "text" })} ml-auto`}
@@ -73,7 +76,7 @@ export default function Page() {
           </div>
         </DisableWhileSubmitting>
       </ResettingForm>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<div className={spinner({ size: "large" })} />}>
         <NoteList />
       </Suspense>
     </div>
