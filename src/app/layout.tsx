@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${font.className} min-h-screen bg-slate-900`}>
+        <body className={`${font.className} min-h-screen bg-neutral-900`}>
           <Navbar />
           {children}
         </body>
@@ -40,8 +40,8 @@ export default function RootLayout({
 function Navbar() {
   const { userId } = auth()
   return (
-    <nav className="flex w-full items-center border-b border-slate-700 px-6 py-4">
-      <Link href="/" className="text-xl font-medium text-emerald-400">
+    <nav className="flex w-full items-center border-b border-neutral-700 px-6 py-4">
+      <Link href="/" className="text-primary-400 text-xl font-medium">
         <Image src={favicon} alt="" className="mr-1 inline" height={32} />
         jot
       </Link>

@@ -30,7 +30,7 @@ export default function Page() {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-8 p-8 lg:max-w-xl">
       <ResettingForm
-        className="w-full rounded-lg border border-slate-700 bg-slate-900 ring-emerald-400 focus-within:shadow-inner focus-within:ring-2"
+        className="ring-primary-400 w-full rounded-lg border border-neutral-700 bg-neutral-900 focus-within:shadow-inner focus-within:ring-2"
         action={async (data: FormData) => {
           "use server"
 
@@ -49,7 +49,7 @@ export default function Page() {
       >
         <DisableWhileSubmitting>
           <textarea
-            className="block w-full resize-none border-0 border-b border-slate-700 bg-transparent p-4 focus:border-slate-700 focus:ring-0"
+            className="block w-full resize-none border-0 border-b border-neutral-700 bg-transparent p-4 focus:border-neutral-700 focus:ring-0"
             rows={5}
             name="content"
             placeholder="I'm thinking about..."
@@ -114,9 +114,9 @@ async function NoteList() {
 
 function Note({ note }: { note: Note }) {
   return (
-    <div className="space-y-4 rounded-lg bg-slate-700 p-4 hover:brightness-105">
+    <div className="space-y-4 rounded-lg bg-neutral-700 p-4 hover:brightness-105">
       <p className="whitespace-pre-wrap">{note.content.trim()}</p>
-      <div className="flex items-center justify-between text-rose-400">
+      <div className="text-secondary-400 flex items-center justify-between">
         <ConfirmButton
           confirmText="Are you sure you want to delete this note?"
           action={async () => {
@@ -145,7 +145,7 @@ function Note({ note }: { note: Note }) {
         </ConfirmButton>
         <time
           dateTime={note.createdAt.toISOString()}
-          className="text-slate-400"
+          className="text-neutral-400"
         >
           {note.createdAt.toLocaleString()}
         </time>
