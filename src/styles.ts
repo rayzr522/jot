@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants"
 
 export const button = tv({
-  base: "px-3 py-2 border rounded active:opacity-80 hover:sclae-105 active:scale-95 transition-transform focus:outline-emerald-400 focus:outline-offset-4 disabled:opacity-80",
+  base: "px-3 py-2 border rounded active:opacity-80 hover:scale-105 active:scale-95 transition-transform focus:outline-emerald-400 focus:outline-offset-4 disabled:opacity-80",
   variants: {
     layout: {
       row: "flex items-center gap-2",
