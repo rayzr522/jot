@@ -41,7 +41,7 @@ function Navbar() {
   const { userId } = auth()
   return (
     <nav className="flex w-full items-center border-b border-neutral-700 px-6 py-4">
-      <Link href="/" className="text-primary-400 text-xl font-medium">
+      <Link href="/" className="text-xl font-medium text-primary-400">
         <Image src={favicon} alt="" className="mr-1 inline" height={32} />
         jot
       </Link>

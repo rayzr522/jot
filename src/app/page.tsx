@@ -6,7 +6,7 @@ export default function Home() {
   if (userId) return redirect("/notes")
   return (
     <main className="min-h-screen space-y-4 p-24">
-      <h1 className="text-primary-400 text-2xl font-semibold">
+      <h1 className="text-2xl font-semibold text-primary-400">
         Welcome to Jot
       </h1>
       <p>
