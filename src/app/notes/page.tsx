@@ -30,11 +30,10 @@ export default function Page() {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-8 p-8 lg:max-w-xl">
       <ResettingForm
-        className="ring-primary-400 w-full rounded-lg border border-neutral-700 bg-neutral-900 focus-within:shadow-inner focus-within:ring-2"
+        className="w-full rounded-lg border border-neutral-700 bg-neutral-900 ring-primary-400 focus-within:shadow-inner focus-within:ring-2"
         action={async (data: FormData) => {
           "use server"
 
-          await new Promise((r) => setTimeout(r, 2000))
           const content = data.get("content")
           if (!content || typeof content !== "string") return null
 
@@ -119,7 +118,7 @@ function Note({ note }: { note: Note }) {
   return (
     <div className="space-y-4 rounded-lg bg-neutral-700 p-4 hover:brightness-105">
       <p className="whitespace-pre-wrap">{note.content.trim()}</p>
-      <div className="text-secondary-400 flex items-center justify-between">
+      <div className="flex items-center justify-between text-secondary-400">
         <ConfirmButton
           confirmText="Are you sure you want to delete this note?"
           action={async () => {
