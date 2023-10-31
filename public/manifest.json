@@ -2,9 +2,11 @@
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "name": "jot",
   "description": "jot down your thoughts & discover powerful insights into your mind",
-  "start_url": "/",
+  "start_url": "/notes",
   "display": "standalone",
   "orientation": "portrait",
+  "theme_color": "#34D399",
+  "background_color": "#0F172A",
   "icons": [
     {
       "src": "/icons/768.png",
