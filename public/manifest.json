@@ -5,7 +5,7 @@
   "start_url": "/notes",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#34D399",
+  "theme_color": "#0F172A",
   "background_color": "#0F172A",
   "icons": [
     {
