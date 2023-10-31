@@ -9,17 +9,20 @@
     {
       "src": "/icons/768.png",
       "type": "image/png",
-      "sizes": "768x768"
+      "sizes": "768x768",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/384.png",
       "type": "image/png",
-      "sizes": "384x384"
+      "sizes": "384x384",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     }
   ]
 }
